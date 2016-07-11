@@ -1,0 +1,31 @@
+{
+    "name": "jjpmann/real-magnet-sdk",
+    "type": "library",
+    "description": "PHP api wrapper for RealMagnet.",
+    "keywords": ["real-magnet", "api", "php"],
+    "homepage": "http://github.com/jjpmann/real-magnet-sdk",
+    "license": "MIT",
+    "authors" : [
+        {
+            "name": "Jerry Price",
+            "email": "jjpmann@gmail.com",
+            "homepage": "http://github.com/jjpmann"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "vlucas/phpdotenv": "^2.3"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9.1",
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RealMagnet\\": "src/"
+        }
+    }
+}
+
+
