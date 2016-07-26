@@ -7,58 +7,336 @@ use GuzzleHttp\Client;
 class RealMagnet
 {
 
-    protected $url = 'https://dna.magnetmail.net/ApiAdapter/Rest/'
+    // https://dna.magnetmail.net/ApiAdapter/Rest/help
 
     protected $username;
 
     protected $password;
 
-    protected $session;
-
     protected $client;
 
-    public function __construct($username, $password) 
+    protected $options = [
+        'headers' => [
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ],
+    ];
+
+    // ----
+
+    protected $session;
+
+    public function __construct($username = '', $password = '', RealMagnetClient $client = null)
     {
+        if (!$username) {
+            $username = getenv('REALMAGNET_USERNAME');
+        }
+        if (!$password) {
+            $password = getenv('REALMAGNET_PASSWORD');
+        }
+
+        if (!$username or !$password) {
+            throw new RealMagnetException('You must provide a valid username and password');
+        }
+
         $this->username = $username;
         $this->password = $password;
 
-        $this->client = new Client([
-            // Base URI is used with relative requests
-            'base_uri' => $this->url,
-            // You can set any number of default request options.
-            'timeout'  => 2.0,
-        ]);
+        if (is_null($client)) {
+            $client = new RealMagnetClient();
+        }
 
+        $this->client = $client;
+
+        $this->init();
+    }
+
+    protected function init()
+    {
+        $this->authenticate();
     }
 
     protected function authenticate()
     {
-        $response = $this->client->request('POST', 'Authenticate');
+        $this->options['body'] = json_encode([
+            'UserName' => $this->username,
+            'Password' => $this->password,
+        ]);
 
-        echo "<pre>".__FILE__.'<br>'.__METHOD__.' : '.__LINE__."<br><br>"; var_dump( $response ); exit;
+        $this->session = $this->call('Authenticate');
+
+        if (!$this->session['SessionID']) {
+            throw new RealMagnetException("You must provide a valid username and password", 1);
+            die('You must provide a valid username and password');
+            return false;
+        }
+        return $this;
+    }
+
+    protected function setBody(Array $data = [])
+    {
+        $body = array_merge([
+            'SessionID' => $this->SessionID,
+            'UserID'    => $this->UserID
+        ], $data);
+
+        $this->options['body'] = json_encode($body);
+        return $this;
+    }
+
+    public function __get($var)
+    {
+        if (isset($this->session[$var])) {
+            return $this->session[$var];
+        }
+    }
+
+    protected function call($method)
+    {
+        try {
+            $response = $this->client->request('POST', $method, $this->options);
+        // } catch (\GuzzleHttp\Exception\ClientException $e) {
+        //     echo('Error');
+        //     throw new RealMagnetException("Error Processing Request", 1);
+        //     return false;
+        // } catch (\GuzzleHttp\Exception\ServerException $e) {
+        //     echo('Error');
+        //     throw new RealMagnetException("Error Processing Request", 1);
+        //     return false;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+            echo('Error');
+            //$req = $e->getRequest();
+            //$resp =$e->getResponse();
+            echo $e->getResponse()->getBody();
+            //throw new RealMagnetException("Error Processing Request", 1);
+            return false;
+        }
+
+        return  json_decode($response->getBody(), true);
+    }
+
+    public function editRecipient($id, $user)
+    {
+        // EditRecipient
+        $body = [
+            'ID'        => $id,
+            'Email'     => $user->email,
+            'FirstName' => $user->firstName,
+            'LastName'  => $user->lastName,
+            'Groups'    => $user->groups
+        ];
         
+        $data = $this->setBody($body)->call('EditRecipient');
+
+        return $data;
     }
 
-    public function getGroups()
+    public function searchRecipients($user)
     {
-        // GetGroups
-    }
+        // SearchRecipient
+        $body = [
+            'Email'     => $user->email,
+        ];
+        
+        $data = $this->setBody($body)->call('SearchRecipient');
 
-    public function addGroup()
-    {
-        // 'AddGroup'
+        return $data;
     }
 
     public function getGroupCategories()
     {
         // GetGroupCategories
+        
+        $data = $this->setBody()->call('GetGroupCategories');
+
+        return $data;
+    }
+    
+    public function getMessageCategories()
+    {
+        // GetMessageCategory
+        
+        $data = $this->setBody()->call('GetMessageCategory');
+
+        return $data;
+    }
+     
+     /* 
+        Call this method to see which groups a recipient belongs to.
+        return array of users if they have groups with ids of groups they belong to
+     */
+     public function getRecipientGroups($ids)
+     {
+        // GetRecipientGroups
+        $body = [
+            'RecipientIds' => $ids,
+        ];
+        
+        $data = $this->setBody($body)->call('GetRecipientGroups');
+
+        return $data;
+     }
+
+    // public function deleteRecipient($id)
+    // {
+    //     // DeleteRecipient
+    //     $body = [
+    //         'ID'        => $id,
+    //     ];
+        
+    //     $data = $this->setBody($body)->call('RemoveRecipient');
+
+    //     return $data;
+    // }
+
+    public function addRecipient($user)
+    {
+        
+        // "Email":"String content",
+        // "FirstName":"String content",
+        // "LastName":"String content",
+
+        // AddRecipient
+        $body = [
+            'Email'     => $user->email,
+            'FirstName' => $user->firstName,
+            'LastName'  => $user->lastName,
+            'Groups'    => $user->groups
+        ];
+        
+        $data = $this->setBody($body)->call('AddRecipient');
+
+        // array(4) {
+        //   ["AdditionalParams"]=>
+        //   string(10) "2743900853"
+        //   ["Error"]=>
+        //   int(0)
+        //   ["ErrorObject"]=>
+        //   array(5) {
+        //     ["ErrorCode"]=>
+        //     string(0) ""
+        //     ["ErrorDetails"]=>
+        //     string(0) ""
+        //     ["ErrorID"]=>
+        //     int(0)
+        //     ["ErrorMessage"]=>
+        //     string(0) ""
+        //     ["ErrorType"]=>
+        //     string(0) ""
+        //   }
+        //   ["Message"]=>
+        //   string(28) "Recipient added successfully"
+        // }
+
+        return $data;
     }
 
-    public function getGroupDetails()
+    public function getSubscribers()
+    {
+        // {
+        //     "SessionID":"String content",
+        //     "UserID":"String content",
+        //     "EndDate":"String content",
+        //     "Groups":[2147483647],
+        //     "ReportType":"String content",
+        //     "StartDate":"String content"
+        // }
+
+        // GetSubscribers
+        $body = [];
+        
+        $data = $this->setBody($body)->call('GetSubscribers');
+
+        return $data;
+    }
+
+    public function getGroups()
+    {
+        // GetGroups
+        $body = [
+            'DisplayStatus'     => 2,
+            'SubscriptionGroup' => 2
+        ];
+
+        $data = $this->setBody($body)->call('GetGroups');
+       
+        return $data;
+       
+    }
+
+    public function getRecipientFields()
+    {
+        // GetRecipientFields
+        $data = $this->setBody()->call('GetRecipientFields');
+        return $data;
+    }
+
+    public function subscribeRecipient($user)
+    {
+        // {
+        //     "SessionID":"String content",
+        //     "UserID":"String content",
+        //     "Category":2147483647,
+        //     "Group":2147483647,
+        //     "ID":9223372036854775807,
+        //     "RemoveAllUnsubscribes":true
+        // }
+        // SubscribeRecipient
+        $body = [
+            'GroupName' => $name,
+        ];
+
+        $data = $this->setBody($body)->call('AddGroup');
+    }
+
+    public function addGroup($name)
+    {
+        // 'AddGroup'
+        $body = [
+            'GroupName' => $name,
+        ];
+
+        $data = $this->setBody($body)->call('AddGroup');
+       
+        /*
+        array(4) {
+          ["AdditionalParams"]=>
+          string(7) "3449447"
+          ["Error"]=>
+          int(0)
+          ["ErrorObject"]=>
+          array(5) {
+            ["ErrorCode"]=>
+            string(0) ""
+            ["ErrorDetails"]=>
+            string(0) ""
+            ["ErrorID"]=>
+            int(0)
+            ["ErrorMessage"]=>
+            string(0) ""
+            ["ErrorType"]=>
+            string(0) ""
+          }
+          ["Message"]=>
+          string(38) "The group has successfully been added!"
+        }
+         */
+
+        return $data;
+    }
+
+    
+    public function getGroupDetails($groupId)
     {
         // GetGroupDetails
-    }
+        $body = [
+            'GroupID' => $groupId,
+        ];
 
+        $data = $this->setBody($body)->call('GetGroupDetails');
+       
+        return $data;
+    }
 }
 
 /*
