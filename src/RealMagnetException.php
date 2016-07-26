@@ -2,4 +2,6 @@
 
 namespace RealMagnet;
 
-class RealMagnetException extends \Exception {}
+class RealMagnetException extends \Exception
+{
+}

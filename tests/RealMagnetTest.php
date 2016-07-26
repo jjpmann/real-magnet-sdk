@@ -6,12 +6,10 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        
     }
 
     public function tearDown()
     {
-        
     }
 
     public function testClassCreate()
@@ -25,5 +23,4 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RealMagnet\RealMagnetException');
         $rm = new RealMagnet();
     }
-
 }
