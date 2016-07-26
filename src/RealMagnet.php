@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 
 class RealMagnet
 {
-
     // https://dna.magnetmail.net/ApiAdapter/Rest/help
 
     protected $username;
@@ -18,7 +17,7 @@ class RealMagnet
     protected $options = [
         'headers' => [
             'content-type' => 'application/json',
-            'Accept' => 'application/json',
+            'Accept'       => 'application/json',
         ],
     ];
 
@@ -66,21 +65,24 @@ class RealMagnet
         $this->session = $this->call('Authenticate');
 
         if (!$this->session['SessionID']) {
-            throw new RealMagnetException("You must provide a valid username and password", 1);
+            throw new RealMagnetException('You must provide a valid username and password', 1);
             die('You must provide a valid username and password');
+
             return false;
         }
+
         return $this;
     }
 
-    protected function setBody(Array $data = [])
+    protected function setBody(array $data = [])
     {
         $body = array_merge([
             'SessionID' => $this->SessionID,
-            'UserID'    => $this->UserID
+            'UserID'    => $this->UserID,
         ], $data);
 
         $this->options['body'] = json_encode($body);
+
         return $this;
     }
 
@@ -104,7 +106,7 @@ class RealMagnet
         //     throw new RealMagnetException("Error Processing Request", 1);
         //     return false;
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-            echo('Error');
+            echo 'Error';
             //$req = $e->getRequest();
             //$resp =$e->getResponse();
             echo $e->getResponse()->getBody();
@@ -123,9 +125,9 @@ class RealMagnet
             'Email'     => $user->email,
             'FirstName' => $user->firstName,
             'LastName'  => $user->lastName,
-            'Groups'    => $user->groups
+            'Groups'    => $user->groups,
         ];
-        
+
         $data = $this->setBody($body)->call('EditRecipient');
 
         return $data;
@@ -137,7 +139,7 @@ class RealMagnet
         $body = [
             'Email'     => $user->email,
         ];
-        
+
         $data = $this->setBody($body)->call('SearchRecipient');
 
         return $data;
@@ -146,35 +148,35 @@ class RealMagnet
     public function getGroupCategories()
     {
         // GetGroupCategories
-        
+
         $data = $this->setBody()->call('GetGroupCategories');
 
         return $data;
     }
-    
+
     public function getMessageCategories()
     {
         // GetMessageCategory
-        
+
         $data = $this->setBody()->call('GetMessageCategory');
 
         return $data;
     }
-     
-     /* 
+
+     /*
         Call this method to see which groups a recipient belongs to.
         return array of users if they have groups with ids of groups they belong to
      */
      public function getRecipientGroups($ids)
      {
-        // GetRecipientGroups
+         // GetRecipientGroups
         $body = [
             'RecipientIds' => $ids,
         ];
-        
-        $data = $this->setBody($body)->call('GetRecipientGroups');
 
-        return $data;
+         $data = $this->setBody($body)->call('GetRecipientGroups');
+
+         return $data;
      }
 
     // public function deleteRecipient($id)
@@ -183,7 +185,7 @@ class RealMagnet
     //     $body = [
     //         'ID'        => $id,
     //     ];
-        
+
     //     $data = $this->setBody($body)->call('RemoveRecipient');
 
     //     return $data;
@@ -191,7 +193,7 @@ class RealMagnet
 
     public function addRecipient($user)
     {
-        
+
         // "Email":"String content",
         // "FirstName":"String content",
         // "LastName":"String content",
@@ -201,9 +203,9 @@ class RealMagnet
             'Email'     => $user->email,
             'FirstName' => $user->firstName,
             'LastName'  => $user->lastName,
-            'Groups'    => $user->groups
+            'Groups'    => $user->groups,
         ];
-        
+
         $data = $this->setBody($body)->call('AddRecipient');
 
         // array(4) {
@@ -244,7 +246,7 @@ class RealMagnet
 
         // GetSubscribers
         $body = [];
-        
+
         $data = $this->setBody($body)->call('GetSubscribers');
 
         return $data;
@@ -255,19 +257,19 @@ class RealMagnet
         // GetGroups
         $body = [
             'DisplayStatus'     => 2,
-            'SubscriptionGroup' => 2
+            'SubscriptionGroup' => 2,
         ];
 
         $data = $this->setBody($body)->call('GetGroups');
-       
+
         return $data;
-       
     }
 
     public function getRecipientFields()
     {
         // GetRecipientFields
         $data = $this->setBody()->call('GetRecipientFields');
+
         return $data;
     }
 
@@ -297,7 +299,7 @@ class RealMagnet
         ];
 
         $data = $this->setBody($body)->call('AddGroup');
-       
+
         /*
         array(4) {
           ["AdditionalParams"]=>
@@ -325,7 +327,6 @@ class RealMagnet
         return $data;
     }
 
-    
     public function getGroupDetails($groupId)
     {
         // GetGroupDetails
@@ -334,7 +335,7 @@ class RealMagnet
         ];
 
         $data = $this->setBody($body)->call('GetGroupDetails');
-       
+
         return $data;
     }
 }
