@@ -15,10 +15,10 @@
     "require": {
         "php": ">=5.5.0",
         "guzzlehttp/guzzle": "~6.0",
-        "vlucas/phpdotenv": "^2.3"
+        "vlucas/phpdotenv": "^2.3",
+        "mockery/mockery": "^0.9.5"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9.1",
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {

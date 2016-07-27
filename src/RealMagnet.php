@@ -25,12 +25,12 @@ class RealMagnet
 
     protected $session;
 
-    public function __construct($username = '', $password = '', RealMagnetClient $client = null)
+    public function __construct($username = null, $password = null, RealMagnetClient $client = null)
     {
-        if (!$username) {
+        if (is_null($username)) {
             $username = getenv('REALMAGNET_USERNAME');
         }
-        if (!$password) {
+        if (is_null($password)) {
             $password = getenv('REALMAGNET_PASSWORD');
         }
 
@@ -47,12 +47,11 @@ class RealMagnet
 
         $this->client = $client;
 
-        $this->init();
     }
 
-    protected function init()
+    public function init()
     {
-        $this->authenticate();
+        return $this->authenticate();
     }
 
     protected function authenticate()
@@ -107,10 +106,7 @@ class RealMagnet
         //     return false;
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
             echo 'Error';
-            //$req = $e->getRequest();
-            //$resp =$e->getResponse();
             echo $e->getResponse()->getBody();
-            //throw new RealMagnetException("Error Processing Request", 1);
             return false;
         }
 
@@ -194,10 +190,6 @@ class RealMagnet
     public function addRecipient($user)
     {
 
-        // "Email":"String content",
-        // "FirstName":"String content",
-        // "LastName":"String content",
-
         // AddRecipient
         $body = [
             'Email'     => $user->email,
@@ -208,27 +200,30 @@ class RealMagnet
 
         $data = $this->setBody($body)->call('AddRecipient');
 
-        // array(4) {
-        //   ["AdditionalParams"]=>
-        //   string(10) "2743900853"
-        //   ["Error"]=>
-        //   int(0)
-        //   ["ErrorObject"]=>
-        //   array(5) {
-        //     ["ErrorCode"]=>
-        //     string(0) ""
-        //     ["ErrorDetails"]=>
-        //     string(0) ""
-        //     ["ErrorID"]=>
-        //     int(0)
-        //     ["ErrorMessage"]=>
-        //     string(0) ""
-        //     ["ErrorType"]=>
-        //     string(0) ""
-        //   }
-        //   ["Message"]=>
-        //   string(28) "Recipient added successfully"
-        // }
+        /*
+        'AdditionalParams' => string '2744024701' (length=10)
+        'Error' => int 1005
+        'ErrorObject' => 
+          array (size=5)
+            'ErrorCode' => string '' (length=0)
+            'ErrorDetails' => string '' (length=0)
+            'ErrorID' => int 0
+            'ErrorMessage' => string '' (length=0)
+            'ErrorType' => string '' (length=0)
+        'Message' => string 'RECIPIENT_EXISTS' (length=16)
+
+        array (size=4)
+          'AdditionalParams' => string '2766465601' (length=10)
+          'Error' => int 0
+          'ErrorObject' => 
+            array (size=5)
+              'ErrorCode' => string '' (length=0)
+              'ErrorDetails' => string '' (length=0)
+              'ErrorID' => int 0
+              'ErrorMessage' => string '' (length=0)
+              'ErrorType' => string '' (length=0)
+          'Message' => string 'Recipient added successfully' (length=28)
+        */
 
         return $data;
     }
@@ -262,7 +257,14 @@ class RealMagnet
 
         $data = $this->setBody($body)->call('GetGroups');
 
+    
+
         return $data;
+    }
+
+    protected function response($data, $msg)
+    {
+
     }
 
     public function getRecipientFields()
