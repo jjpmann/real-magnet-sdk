@@ -105,8 +105,8 @@ class RealMagnet
         //     throw new RealMagnetException("Error Processing Request", 1);
         //     return false;
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-            echo 'Error';
-            echo $e->getResponse()->getBody();
+            // echo 'Error';
+            // echo $e->getResponse()->getBody();
             return false;
         }
 
