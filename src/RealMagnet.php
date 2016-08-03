@@ -48,7 +48,6 @@ class RealMagnet
         }
 
         $this->client = $client;
-
     }
 
     public function init()
@@ -103,7 +102,8 @@ class RealMagnet
         try {
             $response = $this->client->request('POST', $method, $this->options);
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-            throw new RealMagnetException('There was an issue connecting with the API. Error: ' . $e->getMessage());
+            throw new RealMagnetException('There was an issue connecting with the API. Error: '.$e->getMessage());
+
             return false;
         }
 
@@ -118,7 +118,7 @@ class RealMagnet
         // AddRecipient
         $user = new Collection($user);
 
-        $body = $user->map(function($v, $k){
+        $body = $user->map(function ($v, $k) {
             return [ucfirst($k) => $v];
         })->collapse()->toArray();
 
@@ -133,15 +133,17 @@ class RealMagnet
 
         if ($data['Error']) {
             $msg = $data['Message'] ? $data['Message'] : $data['ErrorObject']['ErrorCode'];
+
             return Resp::error([], $msg, $data['Error']);
         }
 
         if (isset($data['AdditionalParams'])) {
             $user['id'] = $data['AdditionalParams'];
+
             return Resp::success(new Collection($user), $data['Message']);
         }
 
-       return $this->unknown('AddRecipient');
+        return $this->unknown('AddRecipient');
     }
 
     public function editRecipient($id, $user)
@@ -165,14 +167,14 @@ class RealMagnet
         // SearchRecipient
         $user = new Collection($user);
 
-        $body = $user->map(function($v, $k){
+        $body = $user->map(function ($v, $k) {
             return [ucfirst($k) => $v];
         })->collapse()->toArray();
 
         if (!count($body) > 0) {
             return Resp::error([], 'No fields were defined in the search.');
         }
-        
+
         $data = $this->setBody($body)->call('SearchRecipient');
 
         if (!count($data) > 0) {
@@ -180,12 +182,11 @@ class RealMagnet
         }
 
         if (count($data)) {
-
-            $users = (new Collection($data))->map(function($user){
+            $users = (new Collection($data))->map(function ($user) {
                 return new Collection($user);
             });
 
-            return Resp::success($users, 'Found: ' . count($data));
+            return Resp::success($users, 'Found: '.count($data));
         }
 
         return $this->unknown('SearchRecipient');
@@ -211,9 +212,9 @@ class RealMagnet
     {
         // EditRecipientGroups
         $body = [
-            'ID'        => $id,
-            'NewGroups' => $newGroups,
-            'UnsubscribeGroups' => $removeGroups
+            'ID'                => $id,
+            'NewGroups'         => $newGroups,
+            'UnsubscribeGroups' => $removeGroups,
         ];
 
         if (!$id || !is_int($id)) {
@@ -247,7 +248,7 @@ class RealMagnet
         if ($data['CustomFields']) {
 
             //echo "<pre>".__FILE__.'<br>'.__METHOD__.' : '.__LINE__."<br><br>"; var_dump( $data['CustomFields'] ); exit;
-            $fields = (new Collection($data['CustomFields']))->map(function($field){
+            $fields = (new Collection($data['CustomFields']))->map(function ($field) {
                 return [$field['FieldName'] => $field['Label']];
             })->collapse();
 
@@ -268,10 +269,11 @@ class RealMagnet
         $data = $this->setBody($body)->call('GetGroups');
 
         if (is_array($data)) {
-            $msg = count($data) > 0 ? 'Groups: ' . count($data) : 'No Groups';
+            $msg = count($data) > 0 ? 'Groups: '.count($data) : 'No Groups';
+
             return Resp::success(new Collection($data), $msg);
         }
-        
+
         return $this->unknown('GetGroups');
     }
 
@@ -329,7 +331,7 @@ class RealMagnet
         }
 
         if ($data) {
-            return Resp::success(new Collection($data), 'Group: ' . $data['GroupName']);
+            return Resp::success(new Collection($data), 'Group: '.$data['GroupName']);
         }
 
         return $this->unknown('GetGroupDetails');
@@ -390,5 +392,4 @@ class RealMagnet
 
         return $data;
     }
-
 }

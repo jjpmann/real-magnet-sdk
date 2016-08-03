@@ -2,18 +2,17 @@
 
 namespace RealMagnet;
 
-use Mockery as m;
 use Illuminate\Support\Collection;
+use Mockery as m;
 
 class RealMagnetTest extends \PHPUnit_Framework_TestCase
 {
-
     // Mocked Client
     protected $client;
 
     protected function setUp()
     {
-        $this->client   = m::mock('RealMagnet\RealMagnetClient');
+        $this->client = m::mock('RealMagnet\RealMagnetClient');
         $this->response = m::mock('GuzzleHttp\Psr7\Response');
     }
 
@@ -49,7 +48,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertfalse($coll->isSuccessful());
         }
-        
+
         $this->assertEquals($message, $coll->message);
         $this->assertEquals($raw, $coll->toJson());
     }
@@ -71,7 +70,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $this->response
             ->shouldReceive('getBody')
             ->andReturn(false);
-        
+
         $this->client
             ->shouldReceive('request')
             ->andReturn($this->response);
@@ -83,7 +82,6 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticatePasses()
     {
-        
         $this->buildCall(json_encode(['SessionID' => 123]));
 
         $rm = new RealMagnet(null, null, $this->client);
@@ -91,7 +89,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetGroups()
-    {   
+    {
         $groups = new Collection([
             ['GroupID' => 1, 'GroupName' => 'one'],
             ['GroupID' => 2, 'GroupName' => 'two'],
@@ -99,16 +97,15 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'Groups: 2';
 
         $this->buildCall($groups->toJson());
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->getGroups();
 
         $this->assertResponseTrue($groups->toJson(), $msg, $coll);
-
     }
 
     public function testGetNoGroups()
-    {   
+    {
         $groups = new Collection([]);
         $msg = 'No Groups';
 
@@ -121,13 +118,13 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetGroupDetails()
-    {   
+    {
         $raw = '{"DisplayStatus":true,"GroupCreated":"\/Date(1470243619063-0400)\/","GroupID":3509753,"GroupName":"lmo.com","LastUpdated":"\/Date(-62135578800000-0500)\/","SubscriptionGroup":false,"TotalEmailSuppressed":0,"TotalInGroup":0,"TotalUnsubscribed":0}';
         $message = 'Group: lmo.com';
         $id = 3509753;
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->getGroupDetails($id);
 
@@ -147,7 +144,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->shouldReceive('request')
             ->andReturn($this->response);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->getGroupDetails($id);
 
@@ -155,13 +152,13 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testNoGroupId()
-    {   
+    {
         $raw = '[]';
         $msg = 'A group ID was not defined.';
         $id = 0;
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->getGroupDetails($id);
 
@@ -175,11 +172,11 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $user = [
             'firstName' => 'First',
             'lastName'  => 'Last',
-            'email'     => 'email2@domain.com'
+            'email'     => 'email2@domain.com',
         ];
 
         $resp = new Collection($user);
-        $resp['id'] = "2778673272";
+        $resp['id'] = '2778673272';
 
         $this->buildCall($raw);
 
@@ -198,9 +195,9 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $user->firstName = 'First';
         $user->lastName = 'Last';
         $user->email = 'email@gmail.com';
-        
+
         $resp = new Collection($user);
-        $resp['id'] = "2778673272";
+        $resp['id'] = '2778673272';
 
         $this->buildCall($raw);
 
@@ -217,11 +214,11 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $user = [
             'firstName' => 'First',
             'lastName'  => 'Last',
-            'email'     => 'email2@domain.com'
+            'email'     => 'email2@domain.com',
         ];
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->addRecipient($user);
 
@@ -239,7 +236,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->addRecipient($user);
 
@@ -253,12 +250,11 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $user = [];
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->searchRecipients($user);
 
         $this->assertResponseFalse($raw, $msg, $coll);
-
     }
 
     public function testSearchNoResults()
@@ -271,12 +267,11 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->searchRecipients($user);
 
         $this->assertResponseFalse($raw, $msg, $coll);
-
     }
 
     public function testSearchResults()
@@ -290,7 +285,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->searchRecipients($user);
 
@@ -300,18 +295,17 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
     public function testGetRecipientFields()
     {
         $raw = '{"CustomFields":[{"FieldName":"Email","Label":"Email"},{"FieldName":"First_Name","Label":"First Name"},{"FieldName":"Last_Name","Label":"Last Name"},{"FieldName":"Phone","Label":"Phone"},{"FieldName":"Fax","Label":"Fax"},{"FieldName":"Address","Label":"Address 1"},{"FieldName":"Address2","Label":"Address 2"},{"FieldName":"City","Label":"City"},{"FieldName":"State","Label":"State"},{"FieldName":"Zip","Label":"Zip"},{"FieldName":"Company","Label":"Company"}],"EnhancedFields":[],"Message":"Transaction has been completed successfully!"}';
-        
+
         $msg = 'Transaction has been completed successfully!';
 
         $resp = '{"Email":"Email","First_Name":"First Name","Last_Name":"Last Name","Phone":"Phone","Fax":"Fax","Address":"Address 1","Address2":"Address 2","City":"City","State":"State","Zip":"Zip","Company":"Company"}';
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->getRecipientFields();
 
         $this->assertResponseTrue($resp, $msg, $coll);
-
     }
 
     public function testEditRecipientGroups()
@@ -323,7 +317,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $id = 2778662917;
 
         $this->buildCall($raw);
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->editRecipientGroups($id, [123]);
 
@@ -339,7 +333,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $this->buildCall($raw);
 
         $id = 0;
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->editRecipientGroups($id);
 
@@ -355,7 +349,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $this->buildCall($raw);
 
         $id = 2778662917;
-        
+
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->editRecipientGroups($id, ['x']);
 
@@ -364,8 +358,5 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
 
     public function testAddGroup()
     {
-        
     }
-
-
 }
