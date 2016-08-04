@@ -17,7 +17,7 @@ class RealMagnetResponse
      *
      * @param mixed $items
      */
-    public function __construct($status, $data, $message = null, $error = false)
+    public function __construct($status, $data, $message = null, $error = null)
     {
         $this->status = $status;
         $this->data = $data;
@@ -25,7 +25,7 @@ class RealMagnetResponse
         $this->message = $message;
     }
 
-    public static function respond($status, $data, $message = null, $error = false)
+    public static function respond($status, $data, $message = null, $error = null)
     {
         return new static($status, $data, $message, $error);
     }
@@ -35,7 +35,7 @@ class RealMagnetResponse
         return self::respond('success', $data, $message);
     }
 
-    public static function error($data, $message = null, $error = true)
+    public static function error($data, $message = null, $error = 1)
     {
         return self::respond('error', $data, $message, $error);
     }

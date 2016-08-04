@@ -208,7 +208,7 @@ class RealMagnet
         return $data;
     }
 
-    public function editRecipientGroups($id = false, $newGroups = [], $removeGroups = [])
+    public function editRecipientGroups($id, $newGroups = [], $removeGroups = [])
     {
         // EditRecipientGroups
         $body = [
@@ -315,15 +315,15 @@ class RealMagnet
         return $data;
     }
 
-    public function getGroupDetails($groupId = false)
+    public function getGroupDetails($id)
     {
         // GetGroupDetails
-        if (!$groupId) {
+        if (!$id) {
             return Resp::error([], 'A group ID was not defined.');
         }
 
         $body = [
-            'GroupID' => $groupId,
+            'GroupID' => $id,
         ];
 
         try {

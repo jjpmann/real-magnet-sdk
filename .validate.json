@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "lint": "php-cs-fixer fix --diff --verbose --dry-run .",
+        "md": "phpmd src text .cleancode.xml",
+        "test": "phpunit"
+    },
+    "pre-commit": [ "lint", "md", "test" ]
+}
