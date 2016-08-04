@@ -2,9 +2,6 @@
 
 namespace RealMagnet;
 
-use Illuminate\Support\Collection;
-use Mockery as m;
-
 class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
 {
     // Mocked Client
@@ -12,7 +9,6 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-
     }
 
     public function tearDown()
@@ -21,7 +17,7 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testClassCreate()
     {
-        $resp = new RealMagnetResponse('status','data');
+        $resp = new RealMagnetResponse('status', 'data');
         $this->assertInstanceOf('RealMagnet\RealMagnetResponse', $resp);
     }
 
@@ -33,7 +29,7 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testStaticSuccessWithMessage()
-    {   
+    {
         $msg = 'Success Message';
 
         $resp = RealMagnetResponse::success('data', $msg);
@@ -50,7 +46,7 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testStaticErrorWithMessage()
-    {   
+    {
         $msg = 'Error Message';
 
         $resp = RealMagnetResponse::error('data', $msg);
@@ -62,13 +58,13 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetter()
     {
         $status = 'status';
-        $data   = 'data';
-        $msg    = 'message';
-        $error  = 'error';
+        $data = 'data';
+        $msg = 'message';
+        $error = 'error';
 
-        $resp = RealMagnetResponse::respond($status, $data, $msg, $error );
+        $resp = RealMagnetResponse::respond($status, $data, $msg, $error);
         $this->assertInstanceOf('RealMagnet\RealMagnetResponse', $resp);
-        
+
         $this->assertEquals($status, $resp->status);
         $this->assertEquals($data, $resp->data);
         $this->assertEquals($msg, $resp->message);
@@ -77,7 +73,6 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testPassThruGetter()
     {
-        
         $mock = \Mockery::mock('stdClass');
         $mock->shouldReceive('fakeMethod')->andReturn('fakeResponse');
         $mock->fakeVar = 'fakeValue';
@@ -86,7 +81,6 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('fakeResponse', $resp->data->fakeMethod());
         $this->assertEquals('fakeValue', $resp->data->fakeVar);
-      
     }
 
     // public function testCreateException()
@@ -94,7 +88,4 @@ class RealMagnetResponseTest extends \PHPUnit_Framework_TestCase
     //     $this->setExpectedException('RealMagnet\RealMagnetException');
     //     $rm = new RealMagnet(false, false, $this->client);
     // }
-
-
-
 }
