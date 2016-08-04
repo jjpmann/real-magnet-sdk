@@ -171,8 +171,8 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'Recipient added successfully';
         $user = [
             'firstName' => 'First',
-            'lastName' => 'Last',
-            'email' => 'email2@domain.com',
+            'lastName'  => 'Last',
+            'email'     => 'email2@domain.com',
         ];
 
         $resp = new Collection($user);
@@ -214,8 +214,8 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'RECIPIENT_EXISTS';
         $user = [
             'firstName' => 'First',
-            'lastName' => 'Last',
-            'email' => 'email2@domain.com',
+            'lastName'  => 'Last',
+            'email'     => 'email2@domain.com',
         ];
 
         $this->buildCall($raw);
@@ -233,7 +233,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'NO_EMAIL';
         $user = [
             'firstName' => 'First',
-            'lastName' => 'Last',
+            'lastName'  => 'Last',
         ];
 
         $this->buildCall($raw);
@@ -264,7 +264,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'No recipients were found.';
         $user = [
             'firstName' => 'First',
-            'lastName' => 'Last',
+            'lastName'  => 'Last',
         ];
 
         $this->buildCall($raw);
@@ -282,7 +282,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'Found: 3';
         $user = [
             'firstName' => 'First',
-            'lastName' => 'Last',
+            'lastName'  => 'Last',
         ];
 
         $this->buildCall($raw);
