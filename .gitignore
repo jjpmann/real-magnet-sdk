@@ -2,3 +2,4 @@ vendor
 .env
 node_modules
 test
+.php_cs.cache

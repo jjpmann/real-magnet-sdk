@@ -18,8 +18,8 @@ class RealMagnet
 
     protected $options = [
         'headers' => [
-            'content-type' => 'application/json',
-            'Accept'       => 'application/json',
+            'content-type'      => 'application/json',
+            'Accept'            => 'application/json',
         ],
     ];
 
