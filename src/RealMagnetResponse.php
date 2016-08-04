@@ -52,7 +52,7 @@ class RealMagnetResponse
             return $this->data->$var;
         }
 
-        if (is_callable(array($this->data, $var))) {
+        if (is_callable([$this->data, $var])) {
             return $this->data->$var();
         }
     }
