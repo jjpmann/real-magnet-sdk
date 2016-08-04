@@ -42,17 +42,18 @@ class RealMagnetResponse
         return self::respond('error', $data, $message, $error);
     }
 
-    public static function json($resp)
-    {
-        $json = json_encode($resp);
-
-        return $json;
-    }
-
     public function __get($var)
     {
         if (isset($this->$var)) {
             return $this->$var;
+        }
+
+        if (property_exists($this->data, $var)) {
+            return $this->data->$var;
+        }
+
+        if (is_callable(array($this->data, $var))) {
+            return $this->data->$var();
         }
     }
 
