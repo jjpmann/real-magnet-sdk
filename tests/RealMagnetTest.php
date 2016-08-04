@@ -171,8 +171,8 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'Recipient added successfully';
         $user = [
             'firstName' => 'First',
-            'lastName'  => 'Last',
-            'email'     => 'email2@domain.com',
+            'lastName' => 'Last',
+            'email' => 'email2@domain.com',
         ];
 
         $resp = new Collection($user);
@@ -184,6 +184,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $coll = $rm->addRecipient($user);
 
         $this->assertResponseTrue($resp->toJson(), $msg, $coll);
+        $this->assertEquals($resp['id'], $coll->data->get('id'));
     }
 
     public function testAddUserAsObj()
@@ -213,8 +214,8 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'RECIPIENT_EXISTS';
         $user = [
             'firstName' => 'First',
-            'lastName'  => 'Last',
-            'email'     => 'email2@domain.com',
+            'lastName' => 'Last',
+            'email' => 'email2@domain.com',
         ];
 
         $this->buildCall($raw);
@@ -232,7 +233,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'NO_EMAIL';
         $user = [
             'firstName' => 'First',
-            'lastName'  => 'Last',
+            'lastName' => 'Last',
         ];
 
         $this->buildCall($raw);
@@ -263,7 +264,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'No recipients were found.';
         $user = [
             'firstName' => 'First',
-            'lastName'  => 'Last',
+            'lastName' => 'Last',
         ];
 
         $this->buildCall($raw);
@@ -281,7 +282,7 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $msg = 'Found: 3';
         $user = [
             'firstName' => 'First',
-            'lastName'  => 'Last',
+            'lastName' => 'Last',
         ];
 
         $this->buildCall($raw);
@@ -321,7 +322,8 @@ class RealMagnetTest extends \PHPUnit_Framework_TestCase
         $rm = new RealMagnet(null, null, $this->client);
         $coll = $rm->editRecipientGroups($id, [123]);
 
-        $this->assertResponseTrue('[]', $msg, $coll);
+        $this->assertResponseTrue('{"id":2778662917}', $msg, $coll);
+        $this->assertEquals($id, $coll->data->get('id'));
     }
 
     public function testEditBadRecipientGroup()

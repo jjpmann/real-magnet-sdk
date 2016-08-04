@@ -16,8 +16,6 @@ class RealMagnetResponse
      * Create a new collection.
      *
      * @param mixed $items
-     *
-     * @return void
      */
     public function __construct($status, $data, $message = null, $error = false)
     {

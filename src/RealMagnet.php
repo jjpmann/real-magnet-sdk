@@ -19,7 +19,7 @@ class RealMagnet
     protected $options = [
         'headers' => [
             'content-type' => 'application/json',
-            'Accept'       => 'application/json',
+            'Accept' => 'application/json',
         ],
     ];
 
@@ -82,7 +82,7 @@ class RealMagnet
     {
         $body = array_merge([
             'SessionID' => $this->SessionID,
-            'UserID'    => $this->UserID,
+            'UserID' => $this->UserID,
         ], $data);
 
         $this->options['body'] = json_encode($body);
@@ -150,11 +150,11 @@ class RealMagnet
     {
         // EditRecipient
         $body = [
-            'ID'        => $id,
-            'Email'     => $user->email,
+            'ID' => $id,
+            'Email' => $user->email,
             'FirstName' => $user->firstName,
-            'LastName'  => $user->lastName,
-            'Groups'    => $user->groups,
+            'LastName' => $user->lastName,
+            'Groups' => $user->groups,
         ];
 
         $data = $this->setBody($body)->call('EditRecipient');
@@ -196,30 +196,32 @@ class RealMagnet
         Call this method to see which groups a recipient belongs to.
         return array of users if they have groups with ids of groups they belong to
      */
-     public function getRecipientGroups($ids)
-     {
-         // GetRecipientGroups
+    public function getRecipientGroups($ids)
+    {
+        // GetRecipientGroups
         $body = [
             'RecipientIds' => $ids,
         ];
 
-         $data = $this->setBody($body)->call('GetRecipientGroups');
+        $data = $this->setBody($body)->call('GetRecipientGroups');
 
-         return $data;
-     }
+        return $data;
+    }
 
     public function editRecipientGroups($id = false, $newGroups = [], $removeGroups = [])
     {
         // EditRecipientGroups
         $body = [
-            'ID'                => $id,
-            'NewGroups'         => $newGroups,
+            'ID' => $id,
+            'NewGroups' => $newGroups,
             'UnsubscribeGroups' => $removeGroups,
         ];
 
         if (!$id || !is_int($id)) {
             return Resp::error([], 'A recipient ID was not defined.');
         }
+
+        // need to get recipient first to have their data
 
         try {
             $data = $this->setBody($body)->call('EditRecipientGroups');
@@ -229,7 +231,7 @@ class RealMagnet
 
         if (isset($data['Status'])) {
             if ($data['Status'] === 1) {
-                return Resp::success([], 'Action has been completed.');
+                return Resp::success(new Collection(['id' => $id]), 'Action has been completed.');
             }
             if ($data['Status'] === 0) {
                 //'An error has occurred. Please check your parameters and make sure that they are passed correctly. If the paramaters are correct, then please contact support@realmagnet.com'
@@ -262,7 +264,7 @@ class RealMagnet
     {
         // GetGroups
         $body = [
-            'DisplayStatus'     => 2,
+            'DisplayStatus' => 2,
             'SubscriptionGroup' => 2,
         ];
 

@@ -10,11 +10,11 @@ class RealMagnetClient extends \GuzzleHttp\Client
     {
         $config = [
             'base_uri' => $this->url,
-            'timeout'  => 5.0, // seconds
+            'timeout' => 5.0, // seconds
             'defaults' => [
                 'headers' => [
                     'content-type' => 'application/json',
-                    'Accept'       => 'application/json',
+                    'Accept' => 'application/json',
                 ],
            ],
         ];
