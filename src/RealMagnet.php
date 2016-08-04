@@ -19,7 +19,7 @@ class RealMagnet
     protected $options = [
         'headers' => [
             'content-type' => 'application/json',
-            'Accept' => 'application/json',
+            'Accept'       => 'application/json',
         ],
     ];
 
@@ -82,7 +82,7 @@ class RealMagnet
     {
         $body = array_merge([
             'SessionID' => $this->SessionID,
-            'UserID' => $this->UserID,
+            'UserID'    => $this->UserID,
         ], $data);
 
         $this->options['body'] = json_encode($body);
@@ -150,11 +150,11 @@ class RealMagnet
     {
         // EditRecipient
         $body = [
-            'ID' => $id,
-            'Email' => $user->email,
+            'ID'        => $id,
+            'Email'     => $user->email,
             'FirstName' => $user->firstName,
-            'LastName' => $user->lastName,
-            'Groups' => $user->groups,
+            'LastName'  => $user->lastName,
+            'Groups'    => $user->groups,
         ];
 
         $data = $this->setBody($body)->call('EditRecipient');
@@ -212,8 +212,8 @@ class RealMagnet
     {
         // EditRecipientGroups
         $body = [
-            'ID' => $id,
-            'NewGroups' => $newGroups,
+            'ID'                => $id,
+            'NewGroups'         => $newGroups,
             'UnsubscribeGroups' => $removeGroups,
         ];
 
@@ -264,7 +264,7 @@ class RealMagnet
     {
         // GetGroups
         $body = [
-            'DisplayStatus' => 2,
+            'DisplayStatus'     => 2,
             'SubscriptionGroup' => 2,
         ];
 
