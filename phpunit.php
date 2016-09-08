@@ -26,11 +26,3 @@ require __DIR__.'/vendor/autoload.php';
 */
 
 date_default_timezone_set('UTC');
-
-//Carbon\Carbon::setTestNow(Carbon\Carbon::now());
-
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
-
-$username = getenv('REALMAGNET_USERNAME');
-$password = getenv('REALMAGNET_PASSWORD');
