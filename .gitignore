@@ -1,5 +1,5 @@
 vendor
-.env
 node_modules
-test
+.env
 .php_cs.cache
+composer.lock
