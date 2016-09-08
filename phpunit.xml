@@ -13,7 +13,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="Laravel Test Suite">
+        <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
@@ -26,4 +26,8 @@
             </exclude>
         </whitelist>
     </filter>
+    <php>
+        <env name="REALMAGNET_USERNAME" value="user@gmail.com"/>
+        <env name="REALMAGNET_PASSWORD" value="******"/>
+    </php>
 </phpunit>
