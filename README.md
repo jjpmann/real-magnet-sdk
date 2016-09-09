@@ -1,25 +1,22 @@
-# Real Magnet SDK
+# PHP Wrapper for [RealMagnet](http://www.realmagnet.com) API
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jjpmann/real-magnet-sdk.svg?style=flat-square)](https://packagist.org/packages/jjpmann/real-magnet-sdk)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/jjpmann/real-magnet-sdk/master.svg?style=flat-square)](https://travis-ci.org/jjpmann/real-magnet-sdk)
 [![StyleCI](https://styleci.io/repos/63074207/shield)](https://styleci.io/repos/63074207)
 
-PHP api wrapper for Real Magnet API 
-
-[https://dna.magnetmail.net/ApiAdapter/Rest/help](https://dna.magnetmail.net/ApiAdapter/Rest/help)
+This package makes it easy to work with [RealMagnet](http://www.realmagnet.com) API.
 
 ## Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Changelog](#changelog)
 - [Testing](#testing)
 - [Security](#security)
-- [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
-- [ToDo](#todo)
 
 ## Installation
 
@@ -31,13 +28,21 @@ composer require jjpmann/real-magnet-sdk
 
 ## Usage
 
+TBD
+
+---
+Official RealMagnet API documentation can be found [here](https://dna.magnetmail.net/ApiAdapter/Rest/help
+). 
+
 ## Testing
 
 ``` bash
-$ phpunit
+$ composer test
 ```
 
 ## Security
+
+If you discover any security related issues, please email jjpmann@gmail.com instead of using the issue tracker.
 
 ## Changelog
 
@@ -45,7 +50,13 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Contributing
 
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
 ## Credits
+
+- [Jerry Price](https://github.com/jjpmann)
+- [Peter Matseykanets](https://github.com/pmatseykanets)
+- [All Contributors](../../contributors)
 
 ## License
 
