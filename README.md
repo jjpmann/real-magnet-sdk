@@ -13,7 +13,6 @@ PHP api wrapper for Real Magnet API
 
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Available Methods] (#)
 - [Testing](#testing)
 - [Security](#security)
 - [Changelog](#changelog)
