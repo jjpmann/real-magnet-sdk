@@ -9,14 +9,14 @@ This package makes it easy to work with [RealMagnet](http://www.realmagnet.com) 
 
 ## Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Changelog](#changelog)
-- [Testing](#testing)
-- [Security](#security)
-- [Contributing](#contributing)
-- [Credits](#credits)
-- [License](#license)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Changelog](#changelog)
+* [Testing](#testing)
+* [Security](#security)
+* [Contributing](#contributing)
+* [Credits](#credits)
+* [License](#license)
 
 ## Installation
 
@@ -28,7 +28,23 @@ composer require jjpmann/real-magnet-sdk
 
 ## Usage
 
-TBD
+### Current Methods
+
+* addRecipient
+* editRecipient
+* searchRecipients
+* getRecipientGroups
+* editRecipientGroups
+* getRecipientFields
+* getGroups
+* addGroup
+* getGroupDetails
+* getGroupCategories
+* getMessageCategories
+* subscribeRecipient
+* getSubscribers
+
+
 
 ---
 Official RealMagnet API documentation can be found [here](https://dna.magnetmail.net/ApiAdapter/Rest/help

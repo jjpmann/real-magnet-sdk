@@ -13,17 +13,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 -->
 
 ## [Unreleased](https://github.com/jjpmann/real-magnet-sdk/tree/HEAD)
+
 ### Added
-- Added this file.
-- Added CONTRIBUTING.md.
-- Added LICENSE.md.
+* Added this file.
+* Added CONTRIBUTING.md.
+* Added LICENSE.md.
 
 ### Changed
-- Updated README.md.
-- Switched from illuminate/support to tightenco/collect.
-- Other minor improvements.
+* Updated README.md.
+* Switched from illuminate/support to tightenco/collect.
+* Other minor improvements.
 
 ### Removed
-- Removed vlucas/phpdotenv as a dependency.
+* Removed vlucas/phpdotenv as a dependency.
 
-## [0.1.2](https://github.com/jjpmann/real-magnet-sdk/releases/tag/v0.1.2) - 2016-08-04
+## [0.1.0](https://github.com/jjpmann/real-magnet-sdk/releases/tag/v0.1.0) - 2016-08-03
+
+### Added
+* Added illuminate/support to conform all response payloads
+
+## [0.0.1](https://github.com/jjpmann/real-magnet-sdk/releases/tag/v0.0.1) - 2016-07-26
+
+Initial Beta Release
